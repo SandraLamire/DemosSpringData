@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>PIGRONNIER</title>
+<style>
+  body {
+    background-color: #ff69b4; /* Rose vif */
+    color: #0000ff; /* Bleu vif */
+    font-family: 'Comic Sans MS', cursive, sans-serif; /* Police détestée */
+    font-size: 18px; /* Taille de police légèrement inconfortable */
+    margin: 0;
+    padding: 20px;
+    overflow: visible; /* Autoriser le défilement de la page */
+  }
+
+  input[type="text"], input[type="number"], input[type="submit"] {
+    background-color: #ffff00; /* Jaune vif */
+    color: #ff0000; /* Rouge vif */
+    border: 3px dotted #00ff00; /* Bordure verte en pointillés */
+    padding: 10px;
+    margin: 10px 0;
+    width: calc(100% - 26px); /* Largeur des champs */
+    box-sizing: border-box;
+    font-family: 'Comic Sans MS', cursive, sans-serif; /* Police détestée */
+  }
+
+  input[type="submit"] {
+    background-color: #00ffff; /* Cyan */
+    color: #ff00ff; /* Magenta */
+    cursor: pointer;
+    border: 5px solid #ff0000; /* Bordure rouge */
+    transition: background-color 0.3s;
+    animation: pulse 1s infinite; /* Animation de pulsation */
+  }
+
+  input[type="submit"]:hover {
+    background-color: #ff0000; /* Rouge vif au survol */
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  .blinking {
+    animation: blinkingText 1s infinite;
+  }
+
+  @keyframes blinkingText {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  span {
+    color: #ff0000; /* Rouge vif pour les erreurs */
+    font-size: 16px;
+    display: block;
+    margin-top: 5px;
+  }
+
+  h1 {
+    color: #00ff00; /* Vert vif */
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px #ff00ff; /* Ombre portée magenta */
+  }
+
+  p {
+    color: #0000ff; /* Bleu vif */
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  div {
+    background-color: #00ff00; /* Vert vif */
+    border: 5px dashed #ff00ff; /* Bordure magenta en tirets */
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px #ff0000; /* Ombre rouge vif */
+  }
+
+  .pigeon-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pigeon-list span {
+    padding: 5px 0;
+    border-bottom: 1px solid #0000ff; /* Ligne séparatrice bleue */
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #ff00ff; /* Magenta */
+  }
+
+  .pigeon {
+    position: absolute;
+    font-size: 100px; /* Taille de police pour les emojis de pigeon */
+    animation: fly 10s linear infinite;
+  }
+
+  @keyframes fly {
+    0% {
+      transform: translateX(-100px) translateY(0) rotate(0);
+    }
+    25% {
+      transform: translateX(25vw) translateY(-20vh) rotate(10deg);
+    }
+    50% {
+      transform: translateX(50vw) translateY(20vh) rotate(-10deg);
+    }
+    75% {
+      transform: translateX(75vw) translateY(-10vh) rotate(10deg);
+    }
+    100% {
+      transform: translateX(100vw) translateY(0) rotate(0);
+    }
+  }
+</style>
+</head>
+<body>
+  <div>
+    <h1 class="blinking">Pigronnier</h1>
+    <form th:action="@{/ihm/pigeon}" th:object="${pigeon}" method="post">
+      <div class="form-group">
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" th:field="*{nom}"/>
+        <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span>
+      </div>
+      <input type="submit" value="Ajouter">
+    </form>
+  </div>
+  <div class="pigeon-list" th:each="pigeon : ${lstPigeons}">
+    <span th:text="${pigeon.nom}"></span>
+    <span th:text="${pigeon.proprio}"></span>
+    <span th:text="${pigeon.code}"></span>
+  </div>
+  
+  <div>
+    <h1 class="blinking">Attaque</h1>
+    <p th:text="${message}"></p>
+    <form th:action="@{/ihm/pigeon/attaque}" th:object="${attaqueDTO}" method="post">
+      <div class="form-group">
+        <label for="ip">IP</label>
+        <input type="number" id="ip" th:field="*{ip}"/>
+        <span th:if="${#fields.hasErrors('ip')}" th:errors="*{ip}"></span>
+      </div>
+      <div class="form-group">
+        <label for="code">Code</label>
+        <input type="number" id="code" th:field="*{code}"/>
+        <span th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span>
+      </div>
+      <input type="submit" value="Ajouter">
+    </form>
+  </div>
+
+  <!-- Pigeon flying animation -->
+  <div class="pigeon">🕊️</div>
+  <div class="pigeon" style="animation-delay: 2s;">
+🕊️</div>
+  <div class="pigeon" style="animation-delay: 4s;">🕊️</div>
+  <div class="pigeon" style="animation-delay: 6s;">🕊️</div>
+  <div class="pigeon" style="animation-delay: 8s;">🕊️</div>
+  <div class="pigeon" style="animation-delay: 10s;">🕊️</div>
+  <div class="pigeon" style="animation-delay: 12s;">🕊️</div>
+  <div class="pigeon" style="animation-delay: 14s;">🕊️</div>
+  <div class="pigeon" style="animation-delay: 16s;">🕊️</div>
+  <div class="pigeon" style="animation-delay: 18s;">🕊️</div>
+  <div class="pigeon" style="animation-delay: 20s;">🕊️</div>
+</body>
+</html>
+  
