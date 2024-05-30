@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Accueil</title>
+</head>
+<body>
+	<form data-th-object="${personne}" method="post" data-th-action="@{/}">
+            nom <input type="text" data-th-field="*{prenom}"/>
+            prenom <input type="text" data-th-field="*{nom}"/>
+			maison <select data-th-field="*{maison}">
+				<option data-th-each="maison : ${lstMaisons}" data-th-text="${maison.adresse}" data-th-value="${maison.idMaison}">
+			</select>
+				
+				
+			<input type="submit" value="ajouter..."/>
+	
+	</form>
+	<ul>
+		<li data-th-each="personne : ${lstPersonnes}">
+			<div>
+				<span data-th-text="${personne.prenom}"/>
+				<span data-th-text="${personne.nom}"/>
+				<span data-th-text="${personne.maison.adresse}"/>
+			</div>
+		</li>
+	</ul>
+</body>
+</html>
